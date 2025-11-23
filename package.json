@@ -3,16 +3,11 @@
   "version": "1.0.0",
   "description": "Personal blog with automatic deployment",
   "scripts": {
-    "build": "node build.js",
-    "dev": "npm run build && npx live-server dist --port=8080 --open=/",
-    "serve": "npx live-server dist --port=8080 --open=/"
+    "build": "node build.js"
   },
   "dependencies": {
     "marked": "^11.1.1",
     "gray-matter": "^4.0.3"
-  },
-  "devDependencies": {
-    "live-server": "^1.2.2"
   },
   "type": "module"
 }
