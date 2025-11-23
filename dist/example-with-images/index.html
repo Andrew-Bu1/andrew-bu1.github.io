@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>How to Add Images and Videos to Your Posts - My Blog</title>
+        <link rel="stylesheet" href="/style.css" />
+        <meta
+            name="description"
+            content="How to Add Images and Videos to Your Posts - A blog post from my daily writings"
+        />
+    </head>
+    <body>
+        <header>
+            <h1>
+                <a href="/" style="color: white; text-decoration: none"
+                    >✨ My Blog ✨</a
+                >
+            </h1>
+            <p>🌈 Thoughts, ideas, and daily writings 📝</p>
+        </header>
+        <main>
+            <a href="/" class="back-link">Back to all posts</a>
+            <article class="post-content">
+                <h1>How to Add Images and Videos to Your Posts</h1>
+                <time datetime="2024-01-02">2024-01-02</time>
+                <div style="margin-top: 2rem"><h1>Adding Images and Videos 📸</h1>
+<p>This post demonstrates how to include images and videos in your blog posts!</p>
+<h2>Adding Images</h2>
+<p>To add an image to your post, simply place the image file in the same folder as your <code>index.md</code> file, then reference it using standard Markdown syntax:</p>
+<pre><code class="language-markdown">![Alt text](image-name.png)
+</code></pre>
+<h3>Example</h3>
+<p>You can add images inline with your text. For example, here&#39;s a placeholder for an image:</p>
+<p><img src="example.png" alt="Example Image"></p>
+<p>You can also add a caption by putting text right after the image:</p>
+<p><em>Caption: This is where your image would appear</em></p>
+<h2>Adding Videos</h2>
+<p>Videos work the same way! Place your video file (mp4, webm, etc.) in the post folder and embed it using HTML:</p>
+<pre><code class="language-html">&lt;video controls width=&quot;100%&quot;&gt;
+  &lt;source src=&quot;your-video.mp4&quot; type=&quot;video/mp4&quot;&gt;
+  Your browser doesn&#39;t support videos.
+&lt;/video&gt;
+</code></pre>
+<h3>Video Example</h3>
+<video controls width="100%" style="max-width: 100%; border-radius: 8px;">
+  <source src="example-video.mp4" type="video/mp4">
+  Your browser doesn't support the video tag.
+</video>
+
+<p><em>Caption: This is where your video would appear</em></p>
+<h2>Folder Structure</h2>
+<p>Your post folder should look like this:</p>
+<pre><code>posts/2024-01-02-example-with-images/
+├── index.md
+├── image1.png
+├── image2.jpg
+└── video.mp4
+</code></pre>
+<h2>Tips</h2>
+<ol>
+<li><strong>Use descriptive names</strong> for your files (e.g., <code>sunset-photo.jpg</code> instead of <code>IMG_001.jpg</code>)</li>
+<li><strong>Optimize your images</strong> before uploading to keep your site fast</li>
+<li><strong>Keep videos short</strong> or consider hosting large videos on YouTube/Vimeo and embedding them</li>
+<li><strong>Use alt text</strong> for images to improve accessibility</li>
+</ol>
+<h2>Best Practices</h2>
+<ul>
+<li><strong>Images</strong>: JPG for photos, PNG for graphics with transparency</li>
+<li><strong>Video formats</strong>: MP4 is most compatible across browsers</li>
+<li><strong>File sizes</strong>: Try to keep images under 1MB and videos under 10MB</li>
+<li><strong>Dimensions</strong>: Resize images to appropriate dimensions before uploading</li>
+</ul>
+<p>That&#39;s it! Just drop your media files in the post folder and reference them in your markdown. The build script will automatically copy them to the right place when deploying.</p>
+<p>Happy blogging! 🚀</p>
+</div>
+            </article>
+        </main>
+        <footer>
+            <p>Built with ❤️ and deployed with GitHub Actions 🚀</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem">
+                © 2024 - Keep writing every day! ✍️
+            </p>
+        </footer>
+    </body>
+</html>
