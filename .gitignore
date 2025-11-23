@@ -2,7 +2,7 @@
 node_modules/
 
 # Build output
-# dist/
+# dist/ is committed for GitHub Pages deployment
 
 # System files
 .DS_Store
@@ -27,3 +27,6 @@ yarn-error.log*
 # Temporary files
 *.tmp
 *.temp
+
+# Allow PDFs for CV/Resume
+# !*.pdf

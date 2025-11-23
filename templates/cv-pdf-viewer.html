@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV / Resume - Andrew Bui</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .pdf-viewer-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .pdf-toolbar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .pdf-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .pdf-button {
+      background: white;
+      color: var(--primary);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pdf-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .pdf-button.secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .pdf-button.secondary:hover {
+      background: white;
+      color: var(--primary);
+    }
+
+    .pdf-info {
+      color: white;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pdf-canvas-container {
+      padding: 2rem;
+      background: #f5f5f5;
+      min-height: 600px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow: auto;
+    }
+
+    #pdf-canvas {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      border-radius: 4px;
+      background: white;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .pdf-navigation {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      color: white;
+    }
+
+    .nav-button {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.5rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    .nav-button:hover:not(:disabled) {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .nav-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .page-info {
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .loading-message {
+      text-align: center;
+      padding: 3rem;
+      color: var(--gray);
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--light-gray);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      text-align: center;
+      padding: 3rem;
+      color: var(--danger);
+    }
+
+    @media (max-width: 768px) {
+      .pdf-toolbar {
+        padding: 1rem;
+      }
+
+      .pdf-controls {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .pdf-navigation {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .pdf-canvas-container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  {{navigation}}
+
+  <div class="container">
+    <header class="page-header">
+      <h1>📄 My CV / Resume</h1>
+      <p>View my professional experience and qualifications</p>
+    </header>
+
+    <main>
+      <div class="pdf-viewer-container">
+        <div class="pdf-toolbar">
+          <div class="pdf-controls">
+            <a href="/resume.pdf" class="pdf-button" download>
+              📥 Download PDF
+            </a>
+            <a href="/resume.pdf" class="pdf-button secondary" target="_blank">
+              🔍 Open in New Tab
+            </a>
+          </div>
+
+          <div class="pdf-navigation">
+            <button id="prev-page" class="nav-button" disabled>← Prev</button>
+            <span class="page-info">
+              Page <span id="page-num">1</span> of <span id="page-count">-</span>
+            </span>
+            <button id="next-page" class="nav-button" disabled>Next →</button>
+          </div>
+
+          <div class="pdf-info">
+            <span>📄 Resume.pdf</span>
+          </div>
+        </div>
+
+        <div class="pdf-canvas-container">
+          <div id="loading" class="loading-message">
+            <div class="loading-spinner"></div>
+            <p>Loading PDF...</p>
+          </div>
+          <div id="error" class="error-message" style="display: none;">
+            <p>❌ Failed to load PDF</p>
+            <p><a href="/resume.pdf" download>Click here to download instead</a></p>
+          </div>
+          <canvas id="pdf-canvas" style="display: none;"></canvas>
+        </div>
+      </div>
+
+      <div class="content" style="margin-top: 2rem;">
+        <h2>📋 Quick Summary</h2>
+
+        <h3>👨‍💻 Professional Summary</h3>
+        <p>Experienced software engineer with 5+ years in full-stack development, cloud architecture, and DevOps practices.</p>
+
+        <h3>💼 Current Role</h3>
+        <p><strong>Senior Software Engineer</strong> at Tech Company Inc.</p>
+
+        <h3>🛠️ Core Skills</h3>
+        <div class="skills-grid">
+          <span class="skill-tag">JavaScript/TypeScript</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Kubernetes</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">PostgreSQL</span>
+        </div>
+
+        <h3>📞 Contact Information</h3>
+        <ul>
+          <li>📧 <strong>Email:</strong> your.email@example.com</li>
+          <li>💼 <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></li>
+          <li>🐙 <strong>GitHub:</strong> <a href="https://github.com/andrew-bu1" target="_blank">github.com/andrew-bu1</a></li>
+        </ul>
+
+        <h3>🎯 Career Highlights</h3>
+        <ul>
+          <li>🚀 Led development of systems serving 1M+ users</li>
+          <li>📈 Improved deployment efficiency by 60% through CI/CD optimization</li>
+          <li>🏆 AWS Certified Solutions Architect</li>
+          <li>📝 Regular technical blogger with 50+ published articles</li>
+          <li>🤝 Mentored 10+ junior developers</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <footer></footer>
+    <p>Built with ❤️ and deployed with GitHub Actions 🚀</p>
+    <p style="margin-top: 0.5rem; font-size: 0.85rem;">© 2024 Andrew Bui - Keep creating every day! ✨</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    // PDF.js configuration
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    const url = '/resume.pdf';
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    const scale = 1.5;
+    const canvas = document.getElementById('pdf-canvas');
+    const ctx = canvas.getContext('2d');
+    const loadingDiv = document.getElementById('loading');
+    const errorDiv = document.getElementById('error');
+
+    /**
+     * Render the page
+     */
+    function renderPage(num) {
+      pageRendering = true;
+
+      pdfDoc.getPage(num).then(function(page) {
+        const viewport = page.getViewport({scale: scale});
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+
+        const renderTask = page.render(renderContext);
+
+        renderTask.promise.then(function() {
+          pageRendering = false;
+          if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+          }
+        });
+      });
+
+      // Update page counters
+      document.getElementById('page-num').textContent = num;
+    }
+
+    /**
+     * Queue page rendering
+     */
+    function queueRenderPage(num) {
+      if (pageRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+
+    /**
+     * Previous page
+     */
+    function onPrevPage() {
+      if (pageNum <= 1) {
+        return;
+      }
+      pageNum--;
+      queueRenderPage(pageNum);
+      updateButtons();
+    }
+    document.getElementById('prev-page').addEventListener('click', onPrevPage);
+
+    /**
+     * Next page
+     */
+    function onNextPage() {
+      if (pageNum >= pdfDoc.numPages) {
+        return;
+      }
+      pageNum++;
+      queueRenderPage(pageNum);
+      updateButtons();
+    }
+    document.getElementById('next-page').addEventListener('click', onNextPage);
+
+    /**
+     * Update navigation buttons
+     */
+    function updateButtons() {
+      document.getElementById('prev-page').disabled = pageNum <= 1;
+      document.getElementById('next-page').disabled = pageNum >= pdfDoc.numPages;
+    }
+
+    /**
+     * Load and render PDF
+     */
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+      pdfDoc = pdfDoc_;
+      document.getElementById('page-count').textContent = pdfDoc.numPages;
+
+      // Hide loading, show canvas
+      loadingDiv.style.display = 'none';
+      canvas.style.display = 'block';
+
+      // Initial render
+      renderPage(pageNum);
+      updateButtons();
+    }).catch(function(error) {
+      console.error('Error loading PDF:', error);
+      loadingDiv.style.display = 'none';
+      errorDiv.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
